@@ -1,7 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ page import="com.qaboard.dao.BoardDAO, com.qaboard.dto.BoardDTO" %>
+<%@ page import="com.qaboard.dao.ChatDAO, com.qaboard.dto.ChatDTO" %>
+<%@ page import="java.util.List" %>
 <%@ include file="header.jsp" %>
-
+<html>
+<head>
+<link rel="stylesheet" href="css/chatStyle.css">
+<script>
+function update(){
+	document.form.chatMsg.value = "";
+	window.location.reload()
+}
+</script>
+</head>
+</html>
+<body>
 <%
     String idStr = request.getParameter("id");
     if (idStr == null) {
@@ -28,10 +41,34 @@
         <a href="reviseBoard.jsp?id=<%=b.getId()%>"><button>수정</button></a>
         <a href="board.jsp"><button>목록</button></a>
     </div>
-
+	
     <h3 style="margin-top:24px;">댓글(간단)</h3>
     <div class="chat-box">
         <!-- 댓글은 별도 테이블/기능으로 확장 가능 (현재는 시연용 정적 메시지) -->
-        <div class="chat-msg">사용자 A: 좋은 질문입니다!</div>
+        <!-- 채팅 목록 영역 -->
+        <div class="chat-msg"> 
+        	<table>
+        	<%
+        	ChatDAO cao = new ChatDAO();
+        	
+        	if(cao.isChat(b.getId())){
+        		List<ChatDTO> chatList = cao.getChatList(b.getId());
+        		for(ChatDTO c:chatList){
+                	%>
+                		<tr><td><strong><%=c.getUserId()%> : <%=c.getMessage()%></strong></td></tr>
+                	<%}}
+        	else{
+        	%><tr><td><strong>채팅 없음</strong></td></tr><%}%>
+        	</table>
+        </div>
+        <!-- 채팅 입력 영역 -->
+        <div class="chat-input">
+        	<form action="chatAction.jsp" method="post" onclick=update()>
+        		<input type="text" name="chatMsg" placeholder="메시지 입력"/>
+        		<input type="hidden" name="boardId" value="<%=b.getId()%>"/>
+        		<input type="submit" value="전송"/>
+        	</form>
+        </div>
     </div>
 </div>
+</body>

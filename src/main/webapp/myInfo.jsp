@@ -4,8 +4,8 @@
 <div class="container">
     <h1>마이페이지</h1>
 
-    <p><strong>ID:</strong> user123</p>
-    <p><strong>이메일:</strong> user@email.com</p>
+    <p><strong>ID:</strong> DB에서 가져와야함</p>
+    <p><strong>이메일:</strong> DB에서 가져와야함</p>
 
     <br>
     <h2>내 글 목록</h2>

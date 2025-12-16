@@ -1,0 +1,62 @@
+/* 전체 채팅 박스 */
+.chat-container {
+    width: 400px;
+    height: 500px;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    font-family: Arial, sans-serif;
+}
+
+/* 채팅 목록 영역 */
+.chat-list {
+    flex: 1;                  /* 남은 공간 채우기 */
+    overflow-y: auto;         /* 스크롤 가능 */
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+/* 테이블 기본 스타일 */
+.chat-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.chat-list td {
+    padding: 5px;
+}
+
+/* hr 스타일 */
+.chat-list hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 5px 0;
+}
+
+/* 채팅 입력 영역 */
+.chat-input {
+    display: flex;
+    padding: 5px;
+    border-top: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.chat-input button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #007bff;
+    background-color: #007bff;
+    color: white;
+    border-radius: 3px;
+}

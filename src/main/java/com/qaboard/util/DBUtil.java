@@ -1,23 +1,22 @@
 package com.qaboard.util;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*; 
+import javax.naming.*;
+import javax.sql.DataSource;
 
 public class DBUtil {
-    private static final String URL = "jdbc:mysql://localhost:3306/QABoard?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASS = "@juki523400";
-
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASS);
-    }
+	private static String jndiName = "jdbc/mysql";
+	public static Connection getConnection(){
+		Connection conn = null;
+		if(conn!=null)
+			return conn;
+		try {
+			Context initContext = (Context)new InitialContext().lookup("java:comp/env/");
+			DataSource ds = (DataSource)initContext.lookup(jndiName);
+			conn = ds.getConnection();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return conn;
+	}
 }

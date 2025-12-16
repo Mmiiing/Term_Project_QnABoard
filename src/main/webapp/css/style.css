@@ -49,6 +49,25 @@ header {
     border-bottom: 1px solid #3a3a3a;
 }
 
+div a:link {
+    color: #333;      /* 기본 링크 색 */
+    text-decoration: none;
+}
+
+div a:visited {
+    color: #999;      /* 방문한 링크 색 */
+}
+
+div a:hover {
+    color: #000;      /* 마우스 올렸을 때 */
+    text-decoration: underline;
+}
+
+div a:active {
+    color: #555;      /* 클릭 중 */
+}
+
+
 nav {
     display: flex;
     justify-content: center;

@@ -2,10 +2,8 @@ package com.qaboard.dao;
 
 import com.qaboard.dto.BoardDTO;
 import com.qaboard.util.DBUtil;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BoardDAO {
 
@@ -16,7 +14,10 @@ public class BoardDAO {
             pst.setString(1, b.getUserid());
             pst.setString(2, b.getTitle());
             pst.setString(3, b.getContent());
-            return pst.executeUpdate() > 0;
+            boolean isDone = pst.executeUpdate() > 0;
+            pst.close();
+            con.close();
+            return isDone;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -39,6 +40,9 @@ public class BoardDAO {
                 b.setViewcnt(rs.getInt("viewcnt"));
                 list.add(b);
             }
+            rs.close();
+            pst.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,12 +63,15 @@ public class BoardDAO {
                     b.setContent(rs.getString("content"));
                     b.setRegdate(rs.getString("regdate"));
                     b.setViewcnt(rs.getInt("viewcnt"));
+                    rs.close();
+                    pst.close();
+                    con.close();
                     return b;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return null; //예의주시
     }
 }
