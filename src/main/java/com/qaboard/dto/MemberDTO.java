@@ -4,7 +4,6 @@ public class MemberDTO {
     private String userid;
     private String password; // hashed
     private String username;
-    private String regdate;
 
     // getters / setters
     public String getUserid() { return userid; }
@@ -13,6 +12,4 @@ public class MemberDTO {
     public void setPassword(String password) { this.password = password; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
-    public String getRegdate() { return regdate; }
-    public void setRegdate(String regdate) { this.regdate = regdate; }
 }

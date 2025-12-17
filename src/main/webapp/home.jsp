@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ include file="/header.jsp" %>
 <link rel="stylesheet" href="css/style.css">
 
 <div class="container">

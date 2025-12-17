@@ -8,6 +8,4 @@ String userId = (String)session.getAttribute("userid");
 
 ChatDAO cao = new ChatDAO();
 cao.addChat(boardId, userId, chatMsg);
-
-out.print("<script>window.history.back()</script>");
 %>

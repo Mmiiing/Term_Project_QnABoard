@@ -27,7 +27,7 @@
             <a href="<%=request.getContextPath()%>/login.jsp">로그인</a>
             <a href="<%=request.getContextPath()%>/register.jsp">회원가입</a>
         <% } else { %>
-            <span style="color:#ddd;"><strong><%=loginName%></strong> 로그인</span>
+            <span style="color:#ddd;"><strong><%=loginName%></strong>님 안녕하세요! </span>
             <a href="<%=request.getContextPath()%>/myInfo.jsp">마이페이지</a>
             <a href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
         <% } %>

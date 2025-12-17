@@ -7,9 +7,28 @@
 <head>
 <link rel="stylesheet" href="css/chatStyle.css">
 <script>
-function update(){
-	document.form.chatMsg.value = "";
-	window.location.reload()
+function sendChat() {
+    const msg = document.getElementById("chatMsg").value;
+    const boardId = document.getElementById("boardId").value;
+
+    fetch("chatAction.jsp", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: "chatMsg=" + msg + "&boardId=" + boardId
+    })
+    .then(() => {
+        document.getElementById("chatMsg").value = "";
+        loadChat();
+    });
+}
+
+function loadChat() {
+    const boardId = document.getElementById("boardId").value;
+    fetch("chatList.jsp?boardId=" + boardId)
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById("chatArea").innerHTML = html;
+        });
 }
 </script>
 </head>
@@ -23,11 +42,19 @@ function update(){
     }
     int id = Integer.parseInt(idStr);
     BoardDAO dao = new BoardDAO();
+    
+    String key = "viewed_board_" + id;
+    if(session.getAttribute(key) == null){
+        dao.increaseView(id);	//세션 당 1회 조회수(로그인/비로그인 관계X) 증가
+        session.setAttribute(key, true);
+    }
+    
     BoardDTO b = dao.findById(id);
     if (b == null) {
         out.println("<script>alert('존재하지 않는 글입니다.'); location.href='board.jsp';</script>");
         return;
     }
+
 %>
 
 <div class="container">
@@ -38,37 +65,29 @@ function update(){
     </div>
 
     <div style="margin-top:14px;">
-        <a href="reviseBoard.jsp?id=<%=b.getId()%>"><button>수정</button></a>
-        <a href="board.jsp"><button>목록</button></a>
+    	<%
+    	String userid = (String)session.getAttribute("userid");
+    	if(b.getUserid().equals(userid)) {%>
+        <a href="reviseBoard.jsp?id=<%=b.getId()%>"><button>Edit</button></a>
+        <a href="deleteBoardAction.jsp?id=<%=b.getId()%>" onclick="return confirm('정말 게시글을 삭제하시겠습니까?');"
+        ><button>Delete</button></a>
+        <%} %>
     </div>
 	
-    <h3 style="margin-top:24px;">댓글(간단)</h3>
+    <h3 style="margin-top:24px;">Chat</h3>
     <div class="chat-box">
-        <!-- 댓글은 별도 테이블/기능으로 확장 가능 (현재는 시연용 정적 메시지) -->
-        <!-- 채팅 목록 영역 -->
-        <div class="chat-msg"> 
-        	<table>
-        	<%
-        	ChatDAO cao = new ChatDAO();
-        	
-        	if(cao.isChat(b.getId())){
-        		List<ChatDTO> chatList = cao.getChatList(b.getId());
-        		for(ChatDTO c:chatList){
-                	%>
-                		<tr><td><strong><%=c.getUserId()%> : <%=c.getMessage()%></strong></td></tr>
-                	<%}}
-        	else{
-        	%><tr><td><strong>채팅 없음</strong></td></tr><%}%>
-        	</table>
-        </div>
         <!-- 채팅 입력 영역 -->
-        <div class="chat-input">
-        	<form action="chatAction.jsp" method="post" onclick=update()>
-        		<input type="text" name="chatMsg" placeholder="메시지 입력"/>
-        		<input type="hidden" name="boardId" value="<%=b.getId()%>"/>
-        		<input type="submit" value="전송"/>
-        	</form>
-        </div>
-    </div>
-</div>
+        <div id="chatArea"></div>
+		<%if(session.getAttribute("userid") == null) {%>
+		<p>로그인 후 채팅 사용 가능</p>
+		<%} else{ %>
+		<input type="hidden" id="boardId" value=<%=b.getId()%>>
+		<input type="text" id="chatMsg">
+		<button onclick="sendChat()">전송</button>
+		<%} %>
+		<script>
+		loadChat(); // 최초 로딩
+		</script>
+
+    	</div>
 </body>
