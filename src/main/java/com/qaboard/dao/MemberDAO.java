@@ -48,6 +48,7 @@ public class MemberDAO {
     
     // 계정 정보 불러오기
     public MemberDTO findInfo(String userid) {
+    	System.out.print("dd"+userid+"zz");
     	String sql = "SELECT userid, username FROM Member WHERE userid=?";
     	try(Connection con = DBUtil.getConnection();
     		PreparedStatement pst = con.prepareStatement(sql)){
